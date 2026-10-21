@@ -4,3 +4,6 @@ build/
 dist/
 bun.lockb
 .DS_Store
+
+# graphify (artefak lokal)
+graphify-out/
