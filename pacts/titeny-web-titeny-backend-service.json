@@ -1,0 +1,500 @@
+{
+  "consumer": {
+    "name": "titeny-web"
+  },
+  "interactions": [
+    {
+      "description": "login CEO langkah 1",
+      "providerStates": [
+        {
+          "name": "akun CEO ada dan kata sandi benar"
+        }
+      ],
+      "request": {
+        "body": {
+          "password": "rahasia-uji",
+          "username": "ceo-titeny"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/login"
+      },
+      "response": {
+        "body": {
+          "otp_diperlukan": true,
+          "sesi_id": "sesi_abc123"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.otp_diperlukan": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.sesi_id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "login dengan kata sandi salah",
+      "providerStates": [
+        {
+          "name": "akun CEO ada dan kata sandi benar"
+        }
+      ],
+      "request": {
+        "body": {
+          "password": "salah",
+          "username": "ceo-titeny"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/login"
+      },
+      "response": {
+        "body": {
+          "error": {
+            "kode": "tidak_berhak",
+            "pesan": "Kredensial tidak valid."
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error.pesan": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 401
+      }
+    },
+    {
+      "description": "permintaan daftar rekomendasi dengan limit",
+      "providerStates": [
+        {
+          "name": "rekomendasi untuk zona PIN vendor tersedia"
+        }
+      ],
+      "request": {
+        "headers": {
+          "X-Zona-PIN": "482013"
+        },
+        "method": "GET",
+        "path": "/api/v1/rekomendasi",
+        "query": {
+          "limit": [
+            "5"
+          ],
+          "zona": [
+            "jakarta_timur"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "data": [
+            {
+              "id": "rek_001",
+              "status": "baru",
+              "teks": [
+                "Tambah stok cabai merah sekitar 300 kg."
+              ],
+              "zona": "jakarta_timur"
+            }
+          ],
+          "next_cursor": null
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.data": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data[*].id": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.data[*].status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^(baru|dikerjakan|selesai)$"
+                }
+              ]
+            },
+            "$.data[*].teks": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.data[*].zona": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "permintaan harga H+1..H+7 dengan X-Zona-PIN",
+      "providerStates": [
+        {
+          "name": "prediksi harga cabai merah di pasar zona PIN tersedia"
+        }
+      ],
+      "request": {
+        "headers": {
+          "X-Zona-PIN": "482013"
+        },
+        "method": "GET",
+        "path": "/api/v1/harga",
+        "query": {
+          "komoditas_id": [
+            "cmd_cabai_merah"
+          ],
+          "pasar_id": [
+            "psr_jakarta_timur_01"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "deret": [
+            {
+              "harga_prediksi": 42500,
+              "horizon": "H+1",
+              "kepercayaan": "sedang",
+              "rentang_atas": 46000,
+              "rentang_bawah": 39000,
+              "tanggal": "2026-10-05"
+            }
+          ],
+          "dihitung_pada": "2026-10-04T04:00:12+07:00",
+          "komoditas_id": "cmd_cabai_merah",
+          "model_version": "harga_v1.0.0",
+          "pasar_id": "psr_jakarta_timur_01"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.deret": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.deret[*].harga_prediksi": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.deret[*].horizon": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^H\\+[1-7]$"
+                }
+              ]
+            },
+            "$.deret[*].kepercayaan": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^(tinggi|sedang|rendah)$"
+                }
+              ]
+            },
+            "$.deret[*].rentang_atas": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.deret[*].rentang_bawah": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.deret[*].tanggal": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^\\d{4}-\\d{2}-\\d{2}$"
+                }
+              ]
+            },
+            "$.dihitung_pada": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^\\d{4}-\\d{2}-\\d{2}T.+$"
+                }
+              ]
+            },
+            "$.model_version": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "permintaan harga tanpa PIN atau token",
+      "providerStates": [
+        {
+          "name": "permintaan tanpa kredensial"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/harga",
+        "query": {
+          "komoditas_id": [
+            "cmd_cabai_merah"
+          ],
+          "pasar_id": [
+            "psr_jakarta_timur_01"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "error": {
+            "kode": "tidak_berhak",
+            "pesan": "Token kedaluwarsa."
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error.pesan": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 401
+      }
+    },
+    {
+      "description": "permintaan kesehatan tanpa kredensial",
+      "providerStates": [
+        {
+          "name": "layanan sehat dan prediksi sudah dihitung"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/kesehatan"
+      },
+      "response": {
+        "body": {
+          "job_terakhir": "2026-10-04T04:00:12+07:00",
+          "status": "ok",
+          "versi_api": "v1.0.0"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.job_terakhir": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^\\d{4}-\\d{2}-\\d{2}T.+$"
+                }
+              ]
+            },
+            "$.versi_api": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "verifikasi OTP benar",
+      "providerStates": [
+        {
+          "name": "sesi OTP aktif dengan kode 123456"
+        }
+      ],
+      "request": {
+        "body": {
+          "otp": "123456",
+          "sesi_id": "sesi_abc123"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "method": "POST",
+        "path": "/api/v1/auth/otp/verifikasi"
+      },
+      "response": {
+        "body": {
+          "access_token": "eyJhbGciOiJIUzI1NiJ9.x.y",
+          "expires_in": 900,
+          "peran": "ceo",
+          "refresh_token": "rt_abc",
+          "token_type": "Bearer"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.access_token": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.expires_in": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.peran": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^(ceo|analis|layanan)$"
+                }
+              ]
+            },
+            "$.refresh_token": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "13.2.0"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "titeny-backend-service"
+  }
+}
