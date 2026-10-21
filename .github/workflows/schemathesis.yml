@@ -1,0 +1,63 @@
+name: schemathesis
+on:
+  workflow_dispatch:
+    inputs:
+      backend_ref:
+        description: Cabang/tag titeny-backend-service yang diuji
+        required: true
+        default: main
+      max_examples:
+        description: Contoh per operasi
+        required: false
+        default: '50'
+
+permissions:
+  contents: read
+
+jobs:
+  uji-properti:
+    runs-on: ubuntu-latest
+    env:
+      SCHEMATHESIS_TELEMETRY: 'off'
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/titeny
+      JWT_SECRET: rahasia-schemathesis-lokal-minimal-32-karakter
+      OTP_LOG_DEV: 'true'
+      BIND_ADDR: 127.0.0.1:8080
+      RATE_LIMIT_PER_MENIT: '100000'
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: titeny
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: Coding-Skuy/titeny-backend-service
+          ref: ${{ inputs.backend_ref }}
+          path: backend
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: astral-sh/setup-uv@v5
+      - name: Bangun dan jalankan backend
+        run: |
+          cd backend && cargo build
+          ./target/debug/titeny-backend-service > "$RUNNER_TEMP/be.log" 2>&1 &
+          for i in $(seq 1 30); do curl -sf http://127.0.0.1:8080/api/v1/kesehatan && break; sleep 2; done
+      - name: Seed
+        run: uvx --with argon2-cffi python contract/seed.py "$DATABASE_URL"
+      - name: Schemathesis
+        env:
+          SPEC: backend/docs/api/openapi.yaml
+          BASE_URL: http://127.0.0.1:8080
+          SERVER_LOG: ${{ runner.temp }}/be.log
+          MAX_EXAMPLES: ${{ inputs.max_examples }}
+        run: contract/schemathesis.sh
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: laporan-schemathesis
+          path: contract/laporan/
