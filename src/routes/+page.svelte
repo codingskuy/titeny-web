@@ -1,24 +1,13 @@
-<script lang="ts">
-  import { ambilRingkas } from '$lib/api';
-  let data: Awaited<ReturnType<typeof ambilRingkas>> | null = null;
-  let galat: string | null = null;
-  async function muat() {
-    try { data = await ambilRingkas(); }
-    catch (e) { galat = String(e); }
-  }
-  muat();
-</script>
+<svelte:head>
+  <title>Titeny — Papan Insight</title>
+</svelte:head>
 
-<main class="p-6 max-w-5xl mx-auto">
-  <h1 class="text-3xl font-bold">Titeny — Dasbor Insight</h1>
-  <p class="opacity-70">Sumber: titeny-backend-service (DB titeny). Model: titeny-ai-models.</p>
-  {#if galat}<p>Belum terhubung ke backend: {galat}</p>
-  {:else if !data}<p>Memuat…</p>
-  {:else}
-    <section class="grid gap-4 mt-4">
-      {#each data.kartu as k}
-        <article class="border rounded p-4"><h2>{k.judul}</h2><p>{k.nilai}</p></article>
-      {/each}
-    </section>
-  {/if}
+<main class="mx-auto max-w-3xl p-4">
+  <h1 class="text-2xl font-bold" data-testid="judul-beranda">Titeny — Papan Insight</h1>
+  <p class="opacity-70">Pilih peran untuk melihat prediksi harga, panen, dan demand.</p>
+  <nav class="mt-4 grid gap-3" aria-label="Pilih peran">
+    <a class="rounded border p-4" href="/insight/petani" data-testid="peran-petani">Petani</a>
+    <a class="rounded border p-4" href="/insight/vendor" data-testid="peran-vendor">Vendor</a>
+    <a class="rounded border p-4" href="/insight/ceo" data-testid="peran-ceo">CEO</a>
+  </nav>
 </main>
