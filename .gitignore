@@ -7,3 +7,7 @@ bun.lockb
 
 # graphify (artefak lokal)
 graphify-out/
+
+# laporan Schemathesis lokal
+contract/laporan/
+.schemathesis/
