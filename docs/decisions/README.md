@@ -15,3 +15,4 @@ Aturan menambah ADR:
 | [ADR-0003](./ADR-0003-klien-kontrak-dan-masuk-per-peran.md) | Klien kontrak API dan masuk per peran | Diterima |
 | [ADR-0004](./ADR-0004-papan-insight-asumsi-kontrak.md) | Papan insight: asumsi atas kontrak yang belum lengkap | Diterima |
 | [ADR-0005](./ADR-0005-papan-vendor-asumsi.md) | Papan vendor: asumsi atas kontrak | Diterima |
+| [ADR-0006](./ADR-0006-papan-ceo-asumsi.md) | Papan CEO: asumsi dan gap kontrak | Diterima |
