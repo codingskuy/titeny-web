@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/*
+ * TOKEN SEMENTARA -- titeny-design belum menerbitkan token. Ganti nilai di sini
+ * (satu tempat) begitu token resmi ada; komponen hanya memakai variabel ini.
+ * Kontras teks terhadap latar memenuhi WCAG AA.
+ */
+:root {
+  --ttn-latar: #f6f7f4;
+  --ttn-kartu: #ffffff;
+  --ttn-garis: #d5d9d0;
+  --ttn-teks: #1b2a1f;
+  --ttn-teks-lembut: #4a5a4e;
+  --ttn-primer: #1f6b3a;
+  --ttn-primer-teks: #ffffff;
+  --ttn-hijau: #1e7a3c;
+  --ttn-hijau-latar: #dff3e4;
+  --ttn-kuning: #7a5a00;
+  --ttn-kuning-latar: #fdf0bf;
+  --ttn-merah: #a31d1d;
+  --ttn-merah-latar: #fbdcdc;
+  --ttn-fokus: #0b57d0;
+}
+
+html {
+  background: var(--ttn-latar);
+  color: var(--ttn-teks);
+}
+
+:focus-visible {
+  outline: 3px solid var(--ttn-fokus);
+  outline-offset: 2px;
+}
+
+body {
+  overflow-x: hidden;
+}
