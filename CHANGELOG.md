@@ -5,6 +5,7 @@ Format: satu seksi per rilis, terbaru di atas. Wajib diperbarui pada setiap comm
 ## [Belum dirilis]
 
 ### Ditambahkan
+- TTN-WEB-TEST-SCHEMATHESIS: `contract/schemathesis.sh` + `seed.py` + `schemathesis.toml` (uji properti terhadap openapi.yaml backend, 5 grup kredensial), workflow manual `schemathesis.yml`, docs/testing/schemathesis.md dengan temuan lari nyata pertama.
 - TTN-WEB-TEST-PACT: uji kontrak konsumen Pact V3 (kesehatan, harga 200/401, rekomendasi, login, OTP) terhadap klien `src/lib`; kontrak terbit di `pacts/`; docs/testing/pact.md.
 - TTN-WEB-004: papan CEO `/insight/ceo` (matriks 5x12, 5 rekomendasi dengan ubah status + catatan maks 140, tab Akurasi, util ekspor CSV maks 500 baris); kurva omzet/margin dan MAPE menunggu endpoint; ADR-0006.
 - TTN-WEB-003: papan vendor `/insight/vendor` (tabel besok 12 komoditas, saran stok dengan stok lokal, peringatan warna + teks, banner estimasi); ADR-0005.
