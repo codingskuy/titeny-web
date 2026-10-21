@@ -111,11 +111,11 @@
         aria-describedby="bantuan-pin"
       />
       <p id="bantuan-pin" class="mt-1 text-sm text-ttn-lembut">PIN dibagikan oleh pengelola zona Anda.</p>
-      <button class={kelasTombol} disabled={sibuk}>{sibuk ? 'Memeriksa…' : 'Masuk'}</button>
+      <button id="tombol-masuk" class={kelasTombol} disabled={sibuk}>{sibuk ? 'Memeriksa…' : 'Masuk'}</button>
     </form>
   {/if}
 
   {#if galat}
-    <p role="alert" class="mt-4 rounded-md bg-ttn-merah-latar px-3 py-2 text-ttn-merah">{galat}</p>
+    <p id="masuk-galat" role="alert" class="mt-4 rounded-md bg-ttn-merah-latar px-3 py-2 text-ttn-merah">{galat}</p>
   {/if}
 </main>

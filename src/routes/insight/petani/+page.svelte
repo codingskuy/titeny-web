@@ -82,7 +82,7 @@
 <svelte:head><title>Papan petani — Titeny</title></svelte:head>
 
 <main class="py-4">
-  <h1 class="text-2xl font-bold">Papan petani</h1>
+  <h1 id="papan-judul" class="text-2xl font-bold">Papan petani</h1>
 
   <label class="mt-3 block text-sm font-medium" for="komoditas">Komoditas</label>
   <select
@@ -102,7 +102,7 @@
 
   {#if isi}
     <!-- Kartu harga -->
-    <section class="mt-4 min-w-0 rounded-lg border border-ttn-garis bg-ttn-kartu p-4" aria-labelledby="h-harga" use:terlihat={{ kartu: 'harga', komoditas_id: data.komoditas_id, zona: hargaOk?.data.pasar_id, model_version: hargaOk?.data.model_version }}>
+    <section id="kartu-harga" class="mt-4 min-w-0 rounded-lg border border-ttn-garis bg-ttn-kartu p-4" aria-labelledby="h-harga" use:terlihat={{ kartu: 'harga', komoditas_id: data.komoditas_id, zona: hargaOk?.data.pasar_id, model_version: hargaOk?.data.model_version }}>
       <h2 id="h-harga" class="font-semibold">Harga {namaKomoditas(data.komoditas_id)}: prediksi H+1 sampai H+7</h2>
 
       {#if isi.harga.status === 'ok'}
@@ -119,7 +119,7 @@
         {/if}
         <div class="mt-3"><GrafikGaris {titik} judul={`Prediksi harga ${namaKomoditas(data.komoditas_id)} H+1 sampai H+7`} /></div>
 
-        <table class="mt-3 w-full table-fixed text-left text-xs">
+        <table id="tabel-harga" class="mt-3 w-full table-fixed text-left text-xs">
           <caption class="sr-only">Tabel prediksi harga dengan rentang P10–P90 dan kepercayaan</caption>
           <thead>
             <tr class="border-b border-ttn-garis">
@@ -156,7 +156,7 @@
     {#if keputusan}
       <section class="mt-4 rounded-lg border border-ttn-garis bg-ttn-kartu p-4" aria-labelledby="h-keputusan" use:terlihat={{ kartu: 'keputusan', komoditas_id: data.komoditas_id, model_version: hargaOk?.data.model_version }}>
         <h2 id="h-keputusan" class="font-semibold">Saran keputusan</h2>
-        <p class="mt-2 inline-block rounded-md border-2 px-4 py-2 text-lg font-bold {kelasLencana[keputusan.lencana]}">
+        <p id="lencana-keputusan" class="mt-2 inline-block rounded-md border-2 px-4 py-2 text-lg font-bold {kelasLencana[keputusan.lencana]}">
           {keputusan.lencana}
         </p>
         <p class="mt-2">{keputusan.alasan}</p>
@@ -168,7 +168,7 @@
 
     <!-- Kartu cuaca-panen -->
     {#if isi.panen !== null}
-      <section class="mt-4 rounded-lg border border-ttn-garis bg-ttn-kartu p-4" aria-labelledby="h-panen" use:terlihat={{ kartu: 'cuaca_panen', komoditas_id: data.komoditas_id }}>
+      <section id="kartu-panen" class="mt-4 rounded-lg border border-ttn-garis bg-ttn-kartu p-4" aria-labelledby="h-panen" use:terlihat={{ kartu: 'cuaca_panen', komoditas_id: data.komoditas_id }}>
         <h2 id="h-panen" class="font-semibold">Panen kabupaten: prediksi M+1 sampai M+4</h2>
         {#if isi.panen.status === 'ok'}
           {#if panenDeret.length === 0}
@@ -204,7 +204,7 @@
           rel="noopener noreferrer">Tawarkan ke gudang</a
         >
       {:else}
-        <button class="mt-2 w-full cursor-not-allowed rounded-md bg-ttn-garis px-4 py-3 font-semibold text-ttn-lembut" disabled>
+        <button id="tombol-gudang" class="mt-2 w-full cursor-not-allowed rounded-md bg-ttn-garis px-4 py-3 font-semibold text-ttn-lembut" disabled>
           Tawarkan ke gudang
         </button>
         <p class="mt-1 text-xs text-ttn-lembut">Tautan form belum dikonfigurasi.</p>

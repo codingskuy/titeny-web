@@ -37,11 +37,12 @@
 <section class="mt-8 rounded-lg border border-ttn-garis bg-ttn-kartu p-4" aria-labelledby="judul-umpan-balik">
   <h2 id="judul-umpan-balik" class="font-semibold">Apakah papan ini membantu?</h2>
   {#if status === 'terkirim'}
-    <p role="status" class="mt-2 text-ttn-hijau">Terima kasih, penilaian Anda tercatat.</p>
+    <p id="umpan-balik-terima" role="status" class="mt-2 text-ttn-hijau">Terima kasih, penilaian Anda tercatat.</p>
   {:else}
     <form onsubmit={kirim} class="mt-2">
       <div class="flex gap-2" role="group" aria-label="Penilaian">
         <button
+          id="nilai-bermanfaat"
           type="button"
           class="flex-1 rounded-md border px-3 py-2 {nilai === 'bermanfaat' ? 'border-ttn-primer bg-ttn-hijau-latar font-semibold' : 'border-ttn-garis'}"
           aria-pressed={nilai === 'bermanfaat'}
@@ -64,6 +65,7 @@
       ></textarea>
       <p class="text-right text-xs text-ttn-lembut">{sisa} karakter tersisa</p>
       <button
+        id="kirim-umpan-balik"
         class="mt-2 w-full rounded-md bg-ttn-primer px-4 py-2 font-semibold text-ttn-primer-teks disabled:opacity-60"
         disabled={!nilai || status === 'kirim'}>{status === 'kirim' ? 'Mengirim…' : 'Kirim penilaian'}</button
       >

@@ -11,13 +11,14 @@
 <svelte:head><title>Titeny — Pilih peran</title></svelte:head>
 
 <main class="mx-auto max-w-md px-4 py-8">
-  <h1 class="text-2xl font-bold">Titeny</h1>
+  <h1 id="beranda-judul" class="text-2xl font-bold">Titeny</h1>
   <p class="mt-1 text-ttn-lembut">Papan insight ChefGenie. Pilih peran Anda untuk masuk.</p>
 
   <ul class="mt-6 space-y-3">
     {#each PERAN_VALID as p}
       <li>
         <a
+          id={`peran-${p}`}
           href={`/masuk?peran=${p}`}
           class="block rounded-lg border border-ttn-garis bg-ttn-kartu p-4 hover:border-ttn-primer"
         >
