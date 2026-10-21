@@ -20,3 +20,15 @@ export function stempelWib(iso: string): string {
   }).format(d);
   return `${t.replace(/\./g, ':').replace(/(\d{2}):(\d{2})$/, '$1.$2')} WIB`;
 }
+
+/** Tanggal hari ini di Asia/Jakarta, `YYYY-MM-DD`. */
+export function hariIniWib(d: Date = new Date()): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Jakarta', year: 'numeric', month: '2-digit', day: '2-digit' }).format(d);
+}
+
+/** `2026-10-05` -> `5 Okt`. */
+export function tanggalPendek(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  if (!y || !m || !d) return iso;
+  return new Intl.DateTimeFormat('id-ID', { timeZone: 'UTC', day: 'numeric', month: 'short' }).format(new Date(Date.UTC(y, m - 1, d)));
+}
