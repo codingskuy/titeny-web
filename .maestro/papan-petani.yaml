@@ -1,0 +1,43 @@
+# Alur bisnis papan petani: pilih peran -> PIN zona -> papan harga + saran keputusan -> kirim umpan-balik.
+# Butuh harness (mock API, PIN 482013): .maestro/jalankan.sh
+url: ${WEB_URL}
+---
+- launchApp
+- tapOn:
+    id: peran-petani
+- tapOn:
+    id: pin
+- inputText: '482013'
+- tapOn:
+    id: tombol-masuk
+- assertVisible:
+    id: papan-judul
+- assertVisible:
+    id: kartu-harga
+- scrollUntilVisible:
+    element:
+      id: tabel-harga
+- assertVisible:
+    id: tabel-harga
+- scrollUntilVisible:
+    element:
+      id: lencana-keputusan
+- assertVisible:
+    id: lencana-keputusan
+- scrollUntilVisible:
+    element:
+      id: kartu-panen
+- assertVisible:
+    id: kartu-panen
+- scrollUntilVisible:
+    element:
+      id: nilai-bermanfaat
+- tapOn:
+    id: nilai-bermanfaat
+- scrollUntilVisible:
+    element:
+      id: kirim-umpan-balik
+- tapOn:
+    id: kirim-umpan-balik
+- assertVisible:
+    id: umpan-balik-terima

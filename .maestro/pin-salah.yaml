@@ -1,0 +1,13 @@
+# Jalur galat: PIN zona salah ditolak dengan pesan yang jelas, tetap di halaman masuk.
+url: ${WEB_URL}
+---
+- launchApp
+- tapOn:
+    id: peran-petani
+- tapOn:
+    id: pin
+- inputText: '000000'
+- tapOn:
+    id: tombol-masuk
+- assertVisible:
+    id: masuk-galat

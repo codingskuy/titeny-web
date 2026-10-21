@@ -1,0 +1,12 @@
+# Smoke web Titeny: landing memuat, tiga peran tersedia. Selector: id HTML.
+url: ${WEB_URL}
+---
+- launchApp
+- assertVisible:
+    id: beranda-judul
+- assertVisible:
+    id: peran-petani
+- assertVisible:
+    id: peran-vendor
+- assertVisible:
+    id: peran-ceo
