@@ -12,3 +12,4 @@ Aturan menambah ADR:
 | ADR | Judul | Status |
 |---|---|---|
 | [ADR-0001](./ADR-0001-fondasi-teknis.md) | Fondasi teknis | Diterima |
+| [ADR-0003](./ADR-0003-klien-kontrak-dan-masuk-per-peran.md) | Klien kontrak API dan masuk per peran | Diterima |
