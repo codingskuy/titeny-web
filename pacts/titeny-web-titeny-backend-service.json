@@ -1,0 +1,224 @@
+{
+  "consumer": {
+    "name": "titeny-web"
+  },
+  "interactions": [
+    {
+      "description": "permintaan harga H+1..H+7",
+      "providerStates": [
+        {
+          "name": "prediksi harga cabai merah tersedia"
+        }
+      ],
+      "request": {
+        "headers": {
+          "X-Zona-PIN": "123456"
+        },
+        "method": "GET",
+        "path": "/api/v1/harga",
+        "query": {
+          "komoditas_id": [
+            "cmd_cabai_merah"
+          ],
+          "pasar_id": [
+            "psr_jakarta_timur_01"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "deret": [
+            {
+              "harga_prediksi": 42500,
+              "horizon": "H+1",
+              "kepercayaan": "sedang",
+              "rentang_atas": 46000,
+              "rentang_bawah": 39000,
+              "tanggal": "2026-10-05"
+            }
+          ],
+          "dihitung_pada": "2026-10-04T04:00:12+07:00",
+          "komoditas_id": "cmd_cabai_merah",
+          "model_version": "harga_v1.0.0",
+          "pasar_id": "psr_jakarta_timur_01"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.deret": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type",
+                  "min": 1
+                }
+              ]
+            },
+            "$.deret[*].harga_prediksi": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.deret[*].kepercayaan": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^(tinggi|sedang|rendah)$"
+                }
+              ]
+            },
+            "$.deret[*].rentang_atas": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.deret[*].rentang_bawah": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "integer"
+                }
+              ]
+            },
+            "$.dihitung_pada": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^\\d{4}-\\d{2}-\\d{2}T.+$"
+                }
+              ]
+            },
+            "$.model_version": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    },
+    {
+      "description": "permintaan harga tanpa PIN",
+      "providerStates": [
+        {
+          "name": "permintaan tanpa kredensial"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/harga",
+        "query": {
+          "komoditas_id": [
+            "cmd_cabai_merah"
+          ],
+          "pasar_id": [
+            "psr_jakarta_timur_01"
+          ]
+        }
+      },
+      "response": {
+        "body": {
+          "error": {
+            "kode": "tidak_berhak",
+            "pesan": "PIN zona diperlukan."
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.error.pesan": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 401
+      }
+    },
+    {
+      "description": "permintaan kesehatan",
+      "providerStates": [
+        {
+          "name": "layanan sehat"
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/api/v1/kesehatan"
+      },
+      "response": {
+        "body": {
+          "job_terakhir": "2026-10-04T04:00:12+07:00",
+          "status": "ok",
+          "versi_api": "v1.0.0"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "matchingRules": {
+          "body": {
+            "$.job_terakhir": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "^\\d{4}-\\d{2}-\\d{2}T.+$"
+                }
+              ]
+            },
+            "$.versi_api": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            }
+          },
+          "header": {},
+          "status": {}
+        },
+        "status": 200
+      }
+    }
+  ],
+  "metadata": {
+    "pact-js": {
+      "version": "13.2.0"
+    },
+    "pactRust": {
+      "ffi": "0.4.22",
+      "models": "1.2.3"
+    },
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "titeny-backend-service"
+  }
+}
