@@ -1,0 +1,6 @@
+# Konfigurasi Schemathesis 4.x untuk backend Titeny (TTN-WEB-TEST-SCHEMATHESIS).
+# Telemetri dimatikan juga lewat SCHEMATHESIS_TELEMETRY=off di skrip.
+
+[generation]
+allow-x00 = false
+codec = "utf-8"
